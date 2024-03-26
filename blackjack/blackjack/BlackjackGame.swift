@@ -12,7 +12,7 @@ class BlackjackGame: ObservableObject {
     @Published public var gameResult: (Int, String) = (3, "Error")
     @Published public var gameOver: Bool = false
     
-    @Published public var dealerHand: [String] = ["cards/card_back", "cards/card_back"]
+    @Published public var dealerHand: [String] = ["cards/card_back"]
     @Published public var playerHand: [String] = ["cards/card_back", "cards/card_back"]
     @Published public var dealt: Bool = false
     
@@ -26,7 +26,7 @@ class BlackjackGame: ObservableObject {
         if !dealt {
             dealerValues = []
             playerValues = []
-            dealerHand = [pickCard(player: false), "cards/card_back"]
+            dealerHand = [pickCard(player: false)]
             playerHand = [pickCard(player: true), pickCard(player: true)]
             dealt = true
             if getScore(player: true) >= 21 {
@@ -38,7 +38,6 @@ class BlackjackGame: ObservableObject {
     
     public func hit() {
         playerHand.append(pickCard(player: true))
-        print(getScore(player: true))
         if getScore(player: true) >= 21 {
             gameResult = endGame()
             winScreen = true
@@ -47,11 +46,7 @@ class BlackjackGame: ObservableObject {
     
     public func stand() {
         while getScore(player: false) < 17 {
-            if dealerHand.count == 2 {
-                dealerHand[1] = pickCard(player: false)
-            } else {
-                dealerHand.append(pickCard(player: false))
-            }
+            dealerHand.append(pickCard(player: false))
         }
         gameResult = endGame()
         winScreen = true
