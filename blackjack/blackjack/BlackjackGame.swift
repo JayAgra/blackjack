@@ -6,14 +6,20 @@
 //
 
 import Foundation
+import GameKit
 
 class BlackjackGame: ObservableObject {
+    @Published public var gameCenterOk: Bool = true
+    
     @Published public var winScreen: Bool = false
     @Published public var gameResult: (Int, String) = (3, "Error")
     @Published public var gameOver: Bool = false
     
-    @Published public var dealerHand: [String] = ["cards/card_back"]
-    @Published public var playerHand: [String] = ["cards/card_back", "cards/card_back"]
+    @Published public var show_count: Bool = UserDefaults.standard.bool(forKey: "show_count")
+    @Published public var deck_path: String = UserDefaults.standard.string(forKey: "deck_type") ?? "cards"
+    
+    @Published public var dealerHand: [String] = ["/card_back"]
+    @Published public var playerHand: [String] = ["/card_back", "/card_back"]
     @Published public var dealt: Bool = false
     
     private var dealerValues: [String] = []
@@ -37,19 +43,25 @@ class BlackjackGame: ObservableObject {
     }
     
     public func hit() {
-        playerHand.append(pickCard(player: true))
-        if getScore(player: true) >= 21 {
-            gameResult = endGame()
-            winScreen = true
+        guard gameOver else {
+            playerHand.append(pickCard(player: true))
+            if getScore(player: true) >= 21 {
+                gameResult = endGame()
+                winScreen = true
+            }
+            return
         }
     }
     
     public func stand() {
-        while getScore(player: false) < 17 {
-            dealerHand.append(pickCard(player: false))
+        guard gameOver else {
+            while getScore(player: false) < 17 {
+                dealerHand.append(pickCard(player: false))
+            }
+            gameResult = endGame()
+            winScreen = true
+            return
         }
-        gameResult = endGame()
-        winScreen = true
     }
     
     private func pickCard(player: Bool) -> String {
@@ -59,10 +71,10 @@ class BlackjackGame: ObservableObject {
         } else {
             dealerValues.append(value)
         }
-        return "cards/card-" + (suits.randomElement() ?? "c") + "_" + value
+        return "/card-" + (suits.randomElement() ?? "c") + "_" + value
     }
     
-    private func getScore(player: Bool) -> Int {
+    public func getScore(player: Bool) -> Int {
         var score: Int = 0
         var aces: Int = 0
         let values: [String] = player ? playerValues : dealerValues
@@ -103,17 +115,61 @@ class BlackjackGame: ObservableObject {
         let dealerScore: Int = getScore(player: false)
         
         if playerScore > 21 {
-            result = "Bust"
+            result = "loss - bust"
+            if gameCenterOk {
+                GKLeaderboard.loadLeaderboards(IDs: ["com.jayagra.blackjack.win_leaderboard"], completionHandler: { leaderboard, error in
+                    leaderboard?.first?.loadEntries(for: [GKLocalPlayer.local], timeScope: .allTime, completionHandler: { leaderboardEntry, leaderboardEntries, error in
+                        if leaderboardEntry != nil {
+                            leaderboard?.first?.submitScore((leaderboardEntry?.score ?? 0) - 1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        } else {
+                            leaderboard?.first?.submitScore(-1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        }
+                    })
+                })
+            }
         } else if dealerScore > 21 {
-            result = "Dealer bust"
+            result = "win - dealer bust"
             gameResult = 1
+            if gameCenterOk {
+                GKLeaderboard.loadLeaderboards(IDs: ["com.jayagra.blackjack.win_leaderboard"], completionHandler: { leaderboard, error in
+                    leaderboard?.first?.loadEntries(for: [GKLocalPlayer.local], timeScope: .allTime, completionHandler: { leaderboardEntry, leaderboardEntries, error in
+                        if leaderboardEntry != nil {
+                            leaderboard?.first?.submitScore((leaderboardEntry?.score ?? 0) + 1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        } else {
+                            leaderboard?.first?.submitScore(1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        }
+                    })
+                })
+            }
         } else if playerScore > dealerScore {
-            result = "You won"
+            result = "win"
             gameResult = 1
+            if gameCenterOk {
+                GKLeaderboard.loadLeaderboards(IDs: ["com.jayagra.blackjack.win_leaderboard"], completionHandler: { leaderboard, error in
+                    leaderboard?.first?.loadEntries(for: [GKLocalPlayer.local], timeScope: .allTime, completionHandler: { leaderboardEntry, leaderboardEntries, error in
+                        if leaderboardEntry != nil {
+                            leaderboard?.first?.submitScore((leaderboardEntry?.score ?? 0) + 1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        } else {
+                            leaderboard?.first?.submitScore(1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        }
+                    })
+                })
+            }
         } else if dealerScore > playerScore {
-            result = "You lost"
+            result = "loss"
+            if gameCenterOk {
+                GKLeaderboard.loadLeaderboards(IDs: ["com.jayagra.blackjack.win_leaderboard"], completionHandler: { leaderboard, error in
+                    leaderboard?.first?.loadEntries(for: [GKLocalPlayer.local], timeScope: .allTime, completionHandler: { leaderboardEntry, leaderboardEntries, error in
+                        if leaderboardEntry != nil {
+                            leaderboard?.first?.submitScore((leaderboardEntry?.score ?? 0) - 1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        } else {
+                            leaderboard?.first?.submitScore(-1, context: 0, player: GKLocalPlayer.local, completionHandler: {_ in })
+                        }
+                    })
+                })
+            }
         } else {
-            result = "Draw"
+            result = "draw"
             gameResult = 2
         }
         

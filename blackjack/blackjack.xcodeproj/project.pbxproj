@@ -11,6 +11,8 @@
 		F516947F2B91A152001C4B82 /* BlackjackTable.swift in Sources */ = {isa = PBXBuildFile; fileRef = F516947E2B91A152001C4B82 /* BlackjackTable.swift */; };
 		F51694812B91A153001C4B82 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F51694802B91A153001C4B82 /* Assets.xcassets */; };
 		F51694842B91A153001C4B82 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F51694832B91A153001C4B82 /* Preview Assets.xcassets */; };
+		F59059312BD83933004FD9CB /* BlackjackSettings.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59059302BD83933004FD9CB /* BlackjackSettings.swift */; };
+		F59059332BD83A3B004FD9CB /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F59059322BD83A3B004FD9CB /* SettingsManager.swift */; };
 		F598DF3A2BACA60900B327A1 /* BlackjackGame.swift in Sources */ = {isa = PBXBuildFile; fileRef = F598DF392BACA60900B327A1 /* BlackjackGame.swift */; };
 /* End PBXBuildFile section */
 
@@ -20,7 +22,10 @@
 		F516947E2B91A152001C4B82 /* BlackjackTable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackjackTable.swift; sourceTree = "<group>"; };
 		F51694802B91A153001C4B82 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		F51694832B91A153001C4B82 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		F59059302BD83933004FD9CB /* BlackjackSettings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackjackSettings.swift; sourceTree = "<group>"; };
+		F59059322BD83A3B004FD9CB /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
 		F598DF392BACA60900B327A1 /* BlackjackGame.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BlackjackGame.swift; sourceTree = "<group>"; };
+		F5B3E9382BBC8B6200477BA8 /* blackjack.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = blackjack.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,9 +58,12 @@
 		F516947B2B91A152001C4B82 /* blackjack */ = {
 			isa = PBXGroup;
 			children = (
+				F5B3E9382BBC8B6200477BA8 /* blackjack.entitlements */,
 				F516947C2B91A152001C4B82 /* blackjackApp.swift */,
 				F598DF392BACA60900B327A1 /* BlackjackGame.swift */,
+				F59059302BD83933004FD9CB /* BlackjackSettings.swift */,
 				F516947E2B91A152001C4B82 /* BlackjackTable.swift */,
+				F59059322BD83A3B004FD9CB /* SettingsManager.swift */,
 				F51694802B91A153001C4B82 /* Assets.xcassets */,
 				F51694822B91A153001C4B82 /* Preview Content */,
 			);
@@ -141,6 +149,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				F516947F2B91A152001C4B82 /* BlackjackTable.swift in Sources */,
+				F59059332BD83A3B004FD9CB /* SettingsManager.swift in Sources */,
+				F59059312BD83933004FD9CB /* BlackjackSettings.swift in Sources */,
 				F598DF3A2BACA60900B327A1 /* BlackjackGame.swift in Sources */,
 				F516947D2B91A152001C4B82 /* blackjackApp.swift in Sources */,
 			);
@@ -273,6 +283,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = blackjack/blackjack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"blackjack/Preview Content\"";
@@ -310,6 +321,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = blackjack/blackjack.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_ASSET_PATHS = "\"blackjack/Preview Content\"";
