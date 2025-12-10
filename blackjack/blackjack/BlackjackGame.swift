@@ -127,6 +127,7 @@ class BlackjackGame: ObservableObject {
                     })
                 })
             }
+            UserDefaults.standard.set(UserDefaults.standard.integer(forKey: "score") - 1, forKey: "score")
         } else if dealerScore > 21 {
             result = "win - dealer bust"
             gameResult = 1
@@ -141,6 +142,7 @@ class BlackjackGame: ObservableObject {
                     })
                 })
             }
+            UserDefaults.standard.set(UserDefaults.standard.integer(forKey: "score") + 1, forKey: "score")
         } else if playerScore > dealerScore {
             result = "win"
             gameResult = 1
@@ -155,6 +157,7 @@ class BlackjackGame: ObservableObject {
                     })
                 })
             }
+            UserDefaults.standard.set(UserDefaults.standard.integer(forKey: "score") + 1, forKey: "score")
         } else if dealerScore > playerScore {
             result = "loss"
             if gameCenterOk {
@@ -168,6 +171,7 @@ class BlackjackGame: ObservableObject {
                     })
                 })
             }
+            UserDefaults.standard.set(UserDefaults.standard.integer(forKey: "score") - 1, forKey: "score")
         } else {
             result = "draw"
             gameResult = 2

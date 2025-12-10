@@ -19,19 +19,19 @@ struct BlackjackSettings: View {
             Form {
                 Section {
                     HStack {
-                        Text("game center score")
+                        Text("Score")
                         Spacer()
-                        Text(gk_score == nil ? "loading..." : String(gk_score ?? 0))
+                        Text(String(gk_score ?? UserDefaults.standard.integer(forKey: "score")))
                     }
                 }
                 Section {
-                    Toggle("show hand count", isOn: $show_count)
+                    Toggle("Show Count", isOn: $show_count)
                         .onChange(of: show_count) { value in
                             UserDefaults.standard.set(show_count, forKey: "show_count")
                             game.show_count = show_count
                         }
-                    Picker("deck", selection: $deck_type) {
-                        Text("Dark (default)")
+                    Picker("Deck Style", selection: $deck_type) {
+                        Text("Dark")
                             .tag("cards")
                         Text("Light")
                             .tag("light_cards")
@@ -47,6 +47,7 @@ struct BlackjackSettings: View {
         .onAppear {
             getScore()
         }
+        .navigationTitle("Settings")
     }
     
     private func getScore() {

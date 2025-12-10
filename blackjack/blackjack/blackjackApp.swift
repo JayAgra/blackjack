@@ -14,7 +14,6 @@ struct blackjackApp: App {
     let settingsManager = SettingsManager.shared
     
     init() {
-        self.state.gameCenterOk = true
         self.gameCenter()
     }
     

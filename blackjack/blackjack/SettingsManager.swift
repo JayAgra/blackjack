@@ -13,7 +13,8 @@ class SettingsManager {
     private init() {
         let defaults: [String: Any] = [
             "show_count": true,
-            "deck_type": "cards"
+            "deck_type": "cards",
+            "score": 0
         ]
         UserDefaults.standard.register(defaults: defaults)
     }
